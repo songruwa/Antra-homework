@@ -1,0 +1,11 @@
+<div class="card" [style.border-color]="borderColor" [style.border-style]="active ? 'solid' : 'none'">
+    <div class="card-header">
+        {{ cardTitle }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{ dummyContent }}</p>
+        <button class="btn" (click)="setColor(color)">
+            {{ buttonLabel }}
+        </button>
+    </div>
+</div>

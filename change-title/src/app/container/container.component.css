@@ -1,0 +1,25 @@
+h1{
+    text-align: center;
+}
+/* https://codepen.io/MattWindle/pen/perZRG */
+.conta{
+    margin: 20px auto;
+    width:700px;
+    height:700px;
+    display:grid;
+    grid-template-columns: 400px 400px;
+    grid-row: auto auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+.conta .box{
+      padding:20px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:sans-serif;
+}
+  
+
+  
