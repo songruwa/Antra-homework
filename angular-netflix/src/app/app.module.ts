@@ -8,6 +8,10 @@ import { RegisterPageComponent } from './component/register-page/register-page.c
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { MovieItemComponent } from './component/movie-item/movie-item.component';
+import { MovieListComponent } from './component/movie-list/movie-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MovieDetailComponent } from './component/movie-detail/movie-detail.component';
 
 
 
@@ -18,12 +22,16 @@ import { FormsModule } from '@angular/forms';
     HomePageComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    NavbarComponent
+    NavbarComponent,
+    MovieItemComponent,
+    MovieListComponent,
+    MovieDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

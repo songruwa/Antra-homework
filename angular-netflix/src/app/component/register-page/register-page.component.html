@@ -1,51 +1,53 @@
 <app-navbar></app-navbar>
 <div class="register-container">
-    <!-- Step 1 -->
-    <div *ngIf="step === 1">
-        <h2>STEP 1 OF 3</h2>
-        <p>Finish setting up your account</p>
-        <p>Netflix is personalized for you. Create a password to watch on any device at any time.</p>
-        <button (click)="nextStep()">Next</button>
-    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Step 1 -->
+        <div *ngIf="step === 1">
+            <h2>STEP 1 OF 3</h2>
+            <p>Finish setting up your account</p>
+            <p>Netflix is personalized for you. Create a password to watch on any device at any time.</p>
+            <button type="button" (click)="nextStep()">Next</button>
+        </div>
 
-    <!-- Step 2 -->
-    <div *ngIf="step === 2">
-        <h2>STEP 2 OF 3</h2>
-        <p>Create a password to start your membership</p>
-        <p>Just a few more steps and you're done! We hate paperwork, too.</p>
-        <form>
+        <!-- Step 2 -->
+        <div *ngIf="step === 2">
+            <h2>STEP 2 OF 3</h2>
+            <p>Create a password to start your membership</p>
+            <p>Just a few more steps and you're done! We hate paperwork, too.</p>
             <div class="form-group">
                 <label for="email">Email address:</label>
-                <input type="email" id="email" class="form-control" placeholder="Enter email">
+                <input type="email" id="email" class="form-control" placeholder="Enter email" formControlName="email">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" class="form-control" placeholder="Enter password">
+                <input type="password" id="password" class="form-control" placeholder="Enter password"
+                    formControlName="password">
             </div>
             <button type="button" (click)="nextStep()">Next</button>
-        </form>
-    </div>
+        </div>
 
-    <!-- Step 3 -->
-    <div *ngIf="step === 3">
-        <h2>STEP 3 OF 3</h2>
-        <p>Choose your plan.</p>
-        <ul>
-            <li>Check mark one: No commitments, cancel anytime.</li>
-            <li>Check mark two: Endless entertainment for one low price.</li>
-            <li>Check mark three: Unlimited viewing on all your devices.</li>
-        </ul>
-        <button (click)="nextStep()">Next</button>
-    </div>
+        <!-- Step 3 -->
+        <div *ngIf="step === 3">
+            <h2>STEP 3 OF 3</h2>
+            <p>Choose your plan.</p>
+            <ul>
+                <li>Check mark one: No commitments, cancel anytime.</li>
+                <li>Check mark two: Endless entertainment for one low price.</li>
+                <li>Check mark three: Unlimited viewing on all your devices.</li>
+            </ul>
+            <button (click)="nextStep()">Next</button>
+        </div>
 
-    <!-- Step 4 -->
-    <div *ngIf="step === 4">
-        <h2>STEP 3 OF 3</h2>
-        <p>Choose the plan that’s right for you</p>
-        <ul>
-            <li>Watch all you want.</li>
-            <li>Recommendations just for you.</li>
-            <li>Change or cancel your plan anytime.</li>
-        </ul>
-    </div>
+        <!-- Step 4 -->
+        <div *ngIf="step === 4">
+            <h2>STEP 3 OF 3</h2>
+            <p>Choose the plan that’s right for you</p>
+            <ul>
+                <li>Watch all you want.</li>
+                <li>Recommendations just for you.</li>
+                <li>Change or cancel your plan anytime.</li>
+            </ul>
+            <button type="submit" [disabled]="!form.valid">Register</button>
+        </div>
+    </form>
 </div>

@@ -1,0 +1,9 @@
+<div *ngIf="movie" class="movie-details">
+    <img [src]="movie.image" alt="{{ movie.title }}" />
+    <h1>{{ movie.title }}</h1>
+    <h2>Rating: {{ movie.rating }}</h2>
+    <h3>Release Date: {{ movie.releaseDate }}</h3>
+    <h3>Genres: {{ movie.genres.join(', ') }}</h3>
+    <p>{{ movie.overview }}</p>
+    <a [href]="movie.homepage" target="_blank">Visit Movie Homepage</a>
+  </div>
