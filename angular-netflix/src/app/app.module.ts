@@ -12,6 +12,9 @@ import { MovieItemComponent } from './component/movie-item/movie-item.component'
 import { MovieListComponent } from './component/movie-list/movie-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MovieDetailComponent } from './component/movie-detail/movie-detail.component';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 
 
@@ -31,7 +34,8 @@ import { MovieDetailComponent } from './component/movie-detail/movie-detail.comp
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
