@@ -1,4 +1,4 @@
-<div class="movie-item" (click)="onClick()">
+<div class="movie-item movie_item" (click)="onClick()">
     <img [src]="movie.image" alt="{{ movie.title }}" />
     <h3>{{ movie.title }}</h3>
     <p>{{ movie.overview | slice: 0:100 }}...</p>

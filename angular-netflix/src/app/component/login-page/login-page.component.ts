@@ -22,7 +22,8 @@ export class LoginPageComponent {
     if (this.form.valid) {
       console.log('Form submitted:', this.form.value);
       // Handle the form submission logic here
+    } else {
+      console.log("Form not valid")
     }
   }
-
 }

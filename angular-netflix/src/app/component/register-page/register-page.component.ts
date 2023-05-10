@@ -32,14 +32,20 @@ export class RegisterPageComponent implements OnInit {
     );
   }
 
-  nextStep(): void {
+nextStep(): void {
+  if (this.step === 1 || this.form.valid) {
     this.step++;
+  } else {
+    window.alert('Form not valid');
   }
+}
 
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Form submitted:', this.form.value);
       // Handle the form submission logic here
+    } else {
+      console.log("Form not valid")
     }
   }
 

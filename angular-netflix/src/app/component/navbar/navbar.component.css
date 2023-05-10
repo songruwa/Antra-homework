@@ -31,3 +31,13 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.movieList {
+    background-color: #e50914;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-decoration: none;
+}

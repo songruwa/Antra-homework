@@ -1,5 +1,6 @@
-<main>
-    <div *ngFor="let movie of movies">
+<app-navbar></app-navbar>
+<main class="main">
+    <div *ngFor="let movie of movies" class="movie_item">
         <app-movie-item [movie]="movie"></app-movie-item>
     </div>
 </main>

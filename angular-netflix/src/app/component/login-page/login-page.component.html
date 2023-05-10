@@ -1,13 +1,29 @@
 <div class="login-container">
+    <div class="header">
+        <a routerLink="/">
+            <img src="assets/logo.png" alt="Netflix Logo">
+        </a>
+    </div>
     <h1>Sign In</h1>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="email">Email address:</label>
-            <input type="email" id="email" class="form-control" placeholder="Enter email" formControlName="email">
+            <input type="email" id="email" class="form-control" placeholder="Email or phone number" formControlName="email">
+            <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
+              <small class="form-text text-muted">Email is required.</small>
+            </div>
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" class="form-control" placeholder="Enter password" formControlName="password">
+            <input type="password" id="password" class="form-control" placeholder="Enter your password" formControlName="password">
+            <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid">
+              <small class="form-text text-muted">Please enter a valid password.</small>
+              <small class="form-text text-muted">Password is required.</small>
+            </div>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember me</label>
         </div>
         <button type="submit" class="btn btn-primary">Sign In</button>
     </form>
