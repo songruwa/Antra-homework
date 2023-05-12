@@ -5,7 +5,7 @@
     align-items: center;
     min-height: calc(100vh - 62px);
     /* Subtract the navbar height */
-    background: url('../../../assets/home-bg.jpg') no-repeat center center fixed;
+    background: url('../../../../assets/home-bg.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
     text-align: center;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MovieService } from '../../service/movie.service';
-import { MoiveDetail } from '../../movie.interface';
+import { MovieService } from '../../../service/movie.service';
+import { MoiveDetail } from '../../../movie.interface';
 
 
 @Component({
