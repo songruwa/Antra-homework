@@ -1,9 +1,17 @@
-<div *ngIf="movie" class="movie-details">
-    <img [src]="movie.image" alt="{{ movie.title }}" />
-    <h1>{{ movie.title }}</h1>
-    <h2>Rating: {{ movie.rating }}</h2>
-    <h3>Release Date: {{ movie.releaseDate }}</h3>
-    <h3>Genres: {{ movie.genres.join(', ') }}</h3>
-    <p>{{ movie.overview }}</p>
-    <a [href]="movie.homepage" target="_blank">Visit Movie Homepage</a>
-</div>
+<app-navbar></app-navbar>
+<mat-card class="card" [ngStyle]="{ 'background-image': 'url(' + movie.image + ')' }" *ngIf="movie">
+    <mat-card-content class="card-content">
+        <h1>{{ moviedetail.title }}</h1>
+        <p class="descriptions">{{ moviedetail.overview }}</p>
+        <span>              
+            {{ moviedetail.runtime }} mins ·  · {{ moviedetail.release_date | date: 'yyyy' }}
+        </span>
+        <h3>Released: {{ moviedetail.release_date | date:'fullDate' }}</h3>
+        <p>Home Page <a [href]="moviedetail.homepage" target="_blank">{{moviedetail.homepage}}</a></p>
+        <mat-card-actions>
+            <button mat-stroked-button color="" class="btn-detail">LIKE</button>
+            <button mat-stroked-button color="" class="btn-detail" (click)="openDialog()">TRAILER</button>
+        </mat-card-actions>
+        <h4 class="rating">RATING: {{ moviedetail.vote_average }}</h4>
+    </mat-card-content>
+</mat-card>
