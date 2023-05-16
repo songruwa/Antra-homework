@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Movie } from '../../../movie.interface';
+import { MovieService } from '../../../service/movie.service'; 
+
 
 @Component({
   selector: 'app-movie-item',
@@ -9,8 +11,9 @@ import { Movie } from '../../../movie.interface';
 })
 export class MovieItemComponent implements OnInit {
   @Input() movie!: Movie;
+  loading$ = this.movieService.loading$; 
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private movieService: MovieService) {}
 
   ngOnInit(): void {}
 

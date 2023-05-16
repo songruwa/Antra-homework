@@ -4,10 +4,11 @@ import { MovieDetailRoutingModule } from './movie-detail-routing.module';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { MatCardModule } from "@angular/material/card";
 import {SharedModule} from '../../shared/shared.module'
-import { YouTubePlayerModule } from '@angular/youtube-player';
-import { YoutubeComponent } from './youtube/youtube.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { YoutubeComponent } from './youtube/youtube.component';
+import { YouTubePlayerModule } from "@angular/youtube-player";
+
 
 
 @NgModule({
@@ -20,9 +21,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MovieDetailRoutingModule,
     MatCardModule,
     SharedModule,
-    YouTubePlayerModule,
     MatIconModule,
     MatDialogModule,
+    YouTubePlayerModule,
   ]
 })
 export class MovieDetailModule { }

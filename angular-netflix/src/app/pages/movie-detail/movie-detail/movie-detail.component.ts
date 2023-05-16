@@ -3,11 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../../service/movie.service';
 import { MovieDetail } from '../../../movie-detail.interface';
 import { MatDialog } from '@angular/material/dialog'; 
-import { YoutubeComponent } from '../youtube/youtube.component'; 
 import { Video } from '../video.interface';
 import { Movie } from 'src/app/movie.interface';
-
-
+import { YoutubeComponent } from '../youtube/youtube.component';
 
 
 @Component({
@@ -25,22 +23,26 @@ export class MovieDetailComponent implements OnInit{
   poster_img_high = '';
   backdrop_img_high = '';
 
+  loading$ = this.movieService.loading$;
+
+
   constructor(private route: ActivatedRoute, private movieService: MovieService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.movieId = +params['id'];
       this.movieService.getMovieDetail(this.movieId).subscribe(movie => {
-        console.log(this.movieId);
         this.moviedetail = movie;
         this.movie = movie;
       });
     });
   }
 
+  // https://www.nerd.vision/post/how-to-pass-data-to-a-matdialog
   openDialog(): void { // Add openDialog method
     const dialogRef = this.dialog.open(YoutubeComponent, {
       data: {
+        movieId: this.movieId,
         movieVideos: this.movieVideos, 
         hasposter_img: this.hasPoster_img, 
         hasbackdrop_img: this.hasBackdrop_img,

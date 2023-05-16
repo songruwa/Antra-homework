@@ -7,6 +7,9 @@ import { MovieListComponent } from './movie-list/movie-list.component';
 import { MovieItemComponent } from './movie-item/movie-item.component'; 
 import { SharedModule } from '../../shared/shared.module'; 
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+
 
 
 @NgModule({
@@ -18,6 +21,7 @@ import { SharedModule } from '../../shared/shared.module';
     CommonModule,
     MovieListRoutingModule,
     SharedModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class MovieListModule { }

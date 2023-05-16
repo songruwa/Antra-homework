@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { Video } from '../video.interface';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MovieService } from '../../../service/movie.service';
 
 @Component({
   selector: 'app-youtube',
@@ -8,38 +8,44 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./youtube.component.css']
 })
 export class YoutubeComponent implements OnInit {
-  movieVideos: Video[] = [];
+
+  keys: string[] = [];
   hasPoster_img = true;
   hasBackdrop_img = true;
   poster_img_high = '';
   backdrop_img_high = '';
 
-  constructor(
-    private dialogRef: MatDialogRef<YoutubeComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private movieService: MovieService) { }
 
   ngOnInit(): void {
-    this.movieVideos = this.data.movieVideos;
     this.hasPoster_img = this.data.hasPoster_img;
     this.hasBackdrop_img = this.data.hasBackdrop_img;
     this.poster_img_high = this.data.poster_img_high;
     this.backdrop_img_high = this.data.backdrop_img_high;
+
+    if (this.data.movieId) {
+      this.movieService.getMovieVideo(this.data.movieId).subscribe((keys) => {
+        this.keys = keys;
+        console.log(this.keys);
+      });
+    }
+
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(tag);
   }
 
   switchVideo(direction: string) {
-    let removedVideo: Video | undefined;
-    
-    if (direction === 'left' && this.movieVideos.length) {
-      removedVideo = this.movieVideos.shift();
-      if (removedVideo) {
-        this.movieVideos.push(removedVideo);
+    if (direction === 'left' && this.keys.length) {
+      const removedKey: string | undefined = this.keys.shift();
+      if (removedKey) {
+        this.keys.push(removedKey);
       }
-    } else if (direction === 'right' && this.movieVideos.length) {
-      removedVideo = this.movieVideos.pop();
-      if (removedVideo) {
-        this.movieVideos.unshift(removedVideo);
+    } else if (direction === 'right' && this.keys.length) {
+      const removedKey: string | undefined = this.keys.pop();
+      if (removedKey) {
+        this.keys.unshift(removedKey);
       }
     }
   }
-  
 }

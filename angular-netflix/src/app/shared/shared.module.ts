@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NavbarComponent} from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
-
+import { CoreModule } from '../core/core.module';
 
 
 
@@ -15,9 +13,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
   imports: [
     CommonModule,
     RouterModule,
+    CoreModule.forRoot(),
   ],
   exports: [
     NavbarComponent
-  ]
+  ],
+  
 })
 export class SharedModule { }

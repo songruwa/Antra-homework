@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Movie, MoiveDetail } from '../movie.interface';
 
 @Injectable({
@@ -11,6 +11,8 @@ export class MovieService {
   private apiKey: string = '7234c6e70cb884a32961ffb587f82eae';
   moviesChanged = new Subject<Movie[]>();
   movieDetailChanged = new Subject<MoiveDetail>();
+  // https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events
+  loading$ = new BehaviorSubject(false);
 
   constructor(private http: HttpClient) {}
 
@@ -42,12 +44,14 @@ export class MovieService {
   }
 
   getMovieDetail(id: number) {
+    this.loading$.next(true);
     return this.http
       .get('https://api.themoviedb.org/3/movie/' + id + '?', {
         params: new HttpParams().set('api_key', this.apiKey),
       })
       .pipe(
         map((response: any) => {
+          this.loading$.next(false); // Make sure to indicate loading has finished after processing the data
           return {
             id: response.id,
             title: response.title,
@@ -58,6 +62,27 @@ export class MovieService {
             genres: response.genres.map((genre: any) => genre.name),
             image: 'https://image.tmdb.org/t/p/w780' + response.poster_path,
           };
+        }),
+        catchError(error => {
+          this.loading$.next(false); // Make sure to indicate loading has finished even if there's an error
+          return throwError(error);
+        })
+      );
+  }
+  
+
+  getMovieVideo(id: number) {
+    return this.http
+      .get<{ id: number; results: Array<{ key: string }> }>(
+        'https://api.themoviedb.org/3/movie/' + id + '/videos?',
+        {
+          params: new HttpParams().set('api_key', this.apiKey),
+        }
+      )
+      .pipe(
+        map((response: any) => {
+          const keys = response.results.map((result: any) => result.key);
+          return keys;
         })
       );
   }

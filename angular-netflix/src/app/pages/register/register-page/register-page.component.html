@@ -14,17 +14,28 @@
             <h2>STEP 2 OF 3</h2>
             <p>Create a password to start your membership</p>
             <p>Just a few more steps and you're done! We hate paperwork, too.</p>
-            <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" id="email" class="form-control" placeholder="Enter email" formControlName="email">
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" class="form-control" placeholder="Enter password"
-                    formControlName="password">
-            </div>
-            <button type="button" (click)="nextStep()">Next</button>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" class="info" formControlName="email">
+                    <div class="check_email_ok" *ngIf="!email?.errors?.['emailExists'] && !isLoading"></div>
+                    <div class="check_email_not" *ngIf="email?.errors?.['emailExists'] && !isLoading"></div>
+                    <div *ngIf="!email?.valid && (email?.dirty || email?.touched)">
+                        <p *ngIf="email?.errors?.['required']">Email is required!</p>
+                        <p *ngIf="email?.errors?.['emailExists']">This email already exists...</p>
+                        <p *ngIf="email?.errors?.['email']">Invalid email!</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="info" formControlName="password">
+                    <div *ngIf="!password?.valid && (password?.dirty || password?.touched)">
+                        <p *ngIf="password?.errors?.['required']">Password is required!</p>
+                        <p *ngIf="!password?.valid">Your password must contain between 4 and 60 characters.</p>
+                    </div>
+                </div>
+                <button [disabled]="!form.valid" type="submit">Next</button>
+            </form>
         </div>
+
 
         <!-- Step 3 -->
         <div *ngIf="step === 3">
@@ -47,7 +58,56 @@
                 <li>Recommendations just for you.</li>
                 <li>Change or cancel your plan anytime.</li>
             </ul>
-            <button type="submit" [disabled]="!form.valid">Register</button>
+            <div class="row first-row">
+                <p></p>
+                <div class="content-container">
+                    <div class="first-column box" (click)="selectPlan('USER')"><p>Basic with ads</p></div>
+                    <div class="second-column box" (click)="selectPlan('SUPERUSER')"><p>Standard</p></div>
+                    <div class="third-column box" (click)="selectPlan('ADMIN')"><p>Premium</p></div>
+                </div>
+    
+            </div>
+            <div class="row">
+                <p class="left">Monthly price</p>
+                <div class="content-container">
+                    <p class="first-column" [ngClass]="{ red: selecedColumn === 'USER' }">$6.99</p>
+                    <p class="second-column" [ngClass]="{ red: selecedColumn === 'SUPERUSER' }">$15.49</p>
+                    <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">$15.99</p>
+                </div>
+            </div>
+            <div class="row">
+                <p class="left">Video quality</p>
+                <div class="content-container">
+                    <p class="first-column" [ngClass]="{ red: selecedColumn === 'USER' }">Good</p>
+                    <p class="second-column" [ngClass]="{ red: selecedColumn === 'SUPERUSER' }">Better</p>
+                    <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">Best</p>
+                </div>
+            </div>
+            <div class="row">
+                <p class="left">Resolution</p>
+                <div class="content-container">
+                    <p class="first-column" [ngClass]="{ red: selecedColumn === 'USER' }">720p</p>
+                    <p class="second-column" [ngClass]="{ red: selecedColumn === 'SUPERUSER' }">1080p</p>
+                    <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">4K+HDR</p>
+                </div>
+            </div>
+            <div class="row">
+                <p class="left">Watch on your TV, computer, mobile phone and tablet</p>
+                <div class="content-container">
+                    <p class="first-column" [ngClass]="{ red: selecedColumn === 'USER' }">YES</p>
+                    <p class="second-column" [ngClass]="{ red: selecedColumn === 'SUPERUSER' }">YES</p>
+                    <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">YES</p>
+                </div>
+            </div>
+            <div class="row last-row">
+                <p class="left">Downloads</p>
+                <div class="content-container">
+                    <p class="first-column" [ngClass]="{ red: selecedColumn === 'USER' }">NO</p>
+                    <p class="second-column" [ngClass]="{ red: selecedColumn === 'SUPERUSER' }">YES</p>
+                    <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">YES</p>
+                </div>
+            </div>
+            <button (click)="handleNavigate()">Submit</button>        
         </div>
     </form>
 </div>

@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
+
+export const AuthServer = new InjectionToken<string>('');
 
 
 
@@ -9,4 +11,16 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class CoreModule { }
+export class CoreModule {
+  public static forRoot(): ModuleWithProviders<CoreModule> {
+    return {
+      ngModule: CoreModule,
+      providers: [
+        {
+          provide: AuthServer,
+          useValue: 'http://localhost:4231',
+        },
+      ]
+    }
+  }
+ }

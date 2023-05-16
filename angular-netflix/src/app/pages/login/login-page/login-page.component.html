@@ -1,33 +1,30 @@
-<div class="login-container">
-    <div class="header">
-        <a routerLink="/">
-            <img src="assets/logo.png" alt="Netflix Logo">
-        </a>
+<app-navbar></app-navbar>
+<main>
+    <div class="form-container">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <h1>sign in</h1>
+            <input placeholder="Email" class="info" formControlName="email">
+            <div *ngIf="!email?.valid && (email?.dirty || email?.touched)">
+                <div *ngIf="email?.hasError('email') && !email?.hasError('required')">
+                    <p>Please enter a valid email</p>
+                </div>
+                <div *ngIf="email?.hasError('required')">
+                    <p>Email is required</p>
+                </div>
+            </div>
+            <input placeholder="Password" class="info" formControlName="password">
+            <div *ngIf="!password?.valid && (password?.dirty || password?.touched)">
+                <p>Your password must contain between 4 and 60 characters.</p>
+            </div>
+            <button [disabled]="!form.valid" type="submit">sign in</button>
+            <p *ngIf="loginMsg"> {{ loginMsg }}</p>
+            <div class="remember-help-container">
+                <span><input type="checkbox" name="remember-me" value="remember me" checked id="checkbox">Remember Me</span>
+                <a id="help">Need help?</a>
+            </div>
+
+            <p class="signup">New to Notflix? <a id="signup" [routerLink]="['/register']">Sign up now</a></p>
+            <p>This page is protected by Google reCAPTCHA to ensure you're not a bot. <a id="learnmore">Learn more.</a></p>
+        </form>
     </div>
-    <h1>Sign In</h1>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="email">Email address:</label>
-            <input type="email" id="email" class="form-control" placeholder="Email or phone number" formControlName="email">
-            <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
-              <small class="form-text text-muted">Email is required.</small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" class="form-control" placeholder="Enter your password" formControlName="password">
-            <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid">
-              <small class="form-text text-muted">Please enter a valid password.</small>
-              <small class="form-text text-muted">Password is required.</small>
-            </div>
-        </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="rememberMe">
-            <label class="form-check-label" for="rememberMe">Remember me</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign In</button>
-    </form>
-    <p class="signup-text">
-        New to Netflix? <a routerLink="/register">Sign up now.</a>
-    </p>
-</div>
+</main>

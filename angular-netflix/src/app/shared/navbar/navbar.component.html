@@ -4,8 +4,10 @@
             <img src="../../../assets/logo.png" alt="Logo" />
         </a>
         <div class="navbar-items">
-            <a routerLink="/movies" class="movieList">Movie List</a>
-            <a routerLink="/login" class="login-btn">Sign In</a>
+            <a *ngIf="authService.userValue?.jwtToken" routerLink="/movies" class="movieList">Movie List</a>
+            <a *ngIf="!authService.userValue?.jwtToken" routerLink="/login" class="login-btn">Sign In</a>
+            <a *ngIf="authService.userValue?.jwtToken" (click)="logout()" class="login-btn">Logout</a>
+            <span *ngIf="authService.userValue?.jwtToken">Hello, {{authService.userValue.username}}!</span>
         </div>
     </nav>
 </header>

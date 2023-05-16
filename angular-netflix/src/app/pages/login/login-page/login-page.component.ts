@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../../service/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -8,8 +9,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginPageComponent {
   form!: FormGroup;
+  loginMsg: string = '';
 
-  constructor(private fb: FormBuilder) { }
+
+  constructor(private fb: FormBuilder, private readonly authService: AuthService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -18,12 +21,17 @@ export class LoginPageComponent {
     });
   }
 
-  onSubmit(): void {
-    if (this.form.valid) {
-      console.log('Form submitted:', this.form.value);
-      // Handle the form submission logic here
-    } else {
-      console.log("Form not valid")
-    }
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+  onSubmit() {
+    this.authService.login({ email: this.email?.value, password: this.password?.value }).subscribe(() => {}, (error) => {
+      console.log(error);
+      this.loginMsg = 'Wrong email or password'
+    });
   }
 }
