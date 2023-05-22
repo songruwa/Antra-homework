@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Movie, MoiveDetail } from '../movie.interface';
+import { DiscoverMovie } from '../service/interface/discover-movie.interface';
+import { SearchMovieReturn } from '../service/interface/search-movie-return.interface';
+import { SearchMovieDto } from './interface/search-movie-dto.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +17,27 @@ export class MovieService {
   movieDetailChanged = new Subject<MoiveDetail>();
   // https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events
   loading$ = new BehaviorSubject(false);
+
+  private baseDiscoverMovie: DiscoverMovie = {
+    api_key: '',
+    page: 1,
+    language: 'en-US',
+    sort_by: 'popularity.desc',
+    include_adult: false,
+    include_video: false,
+    with_watch_monetization_types: 'flatrate',
+  };
+  private baseSearchMovie: SearchMovieDto = {
+    api_key: '',
+    query: '',
+    language: 'en-US',
+    page: 1,
+  };
+
+  set setMyApiKey(api_key: string) {
+    this.baseDiscoverMovie.api_key = api_key;
+    this.baseSearchMovie.api_key = api_key;
+  }
 
   constructor(private http: HttpClient) {}
 

@@ -9,13 +9,16 @@ import { AppUserRegister, UserInfo } from '../service/interface/user-signup.inte
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthDto } from '../service/interface/auth-dto.interface';
 import { AppUser } from '../service/interface/user-login.interface';
+import { MovieService } from './movie.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  // https://www.indellient.com/blog/intro-to-rxjs-in-angular-observables-subjects-and-behaviorsubjects/
   private jwtHelper = new JwtHelperService();
-  private appUserRegister = new AppUserRegister();
+  public appUserRegister = new AppUserRegister();
   private userSubject$: BehaviorSubject<AppUserAuth> = new BehaviorSubject({});
   user$: Observable<AppUserAuth> = this.userSubject$.asObservable();
   private refreshTokenTimeout!: ReturnType<typeof setTimeout>;
@@ -30,13 +33,17 @@ export class AuthService {
   constructor(
     private readonly router: Router,
     private readonly http: HttpClient,
+    private movieservice: MovieService,
     @Inject(AuthServer) private readonly authServerPath: string) { }
 
   addUserInfo(userInfo: UserInfo) {
+    console.log("before updating: ", this.appUserRegister);
     this.appUserRegister = {
       ...this.appUserRegister,
       ...userInfo,
     };
+    console.log("after updating: ", this.appUserRegister);
+
   }
 
   signup(userRole: { role: UserRole }): Observable<AuthDto | string> {
@@ -44,15 +51,17 @@ export class AuthService {
       ...this.appUserRegister,
       ...userRole,
     };
-    const { username, password, email, role } = this.appUserRegister;
 
-    if (!username || !password || !email || !role)
+    console.log("appUserRegister is : "+JSON.stringify(this.appUserRegister));
+    const { username, password, email, role, tmdb_key } = this.appUserRegister;
+
+    if (!username || !password || !email || !role || !tmdb_key)
       return of('Registration failed');
 
     return this.http.post<AuthDto>(
-        `${this.authServerPath}/auth/signup`,
-        this.appUserRegister
-      )
+      `${this.authServerPath}/auth/signup`,
+      this.appUserRegister
+    )
       .pipe(
         tap(({ accessToken, role }: AuthDto) => {
           console.log('JWT Access Token after signup: ', accessToken);
@@ -67,12 +76,12 @@ export class AuthService {
 
   login(appUser: AppUser): Observable<AuthDto> {
     return this.http.post<AuthDto>(
-        `${this.authServerPath}/auth/signin`,
-        appUser
-      )
+      `${this.authServerPath}/auth/signin`,
+      appUser
+    )
       .pipe(
         tap(({ accessToken, role }: AuthDto) => {
-          console.log('JWT Access Token after login: ', accessToken); 
+          console.log('JWT Access Token after login: ', accessToken);
 
           this.setUserValuebyToken({ accessToken, role });
           this.router.navigate(['/movies']);
@@ -85,6 +94,8 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('access_token');
+    this.movieservice.setMyApiKey = '';
+    this.stopRefreshTokenTimer();
     this.userSubject$.next({});
     this.router.navigate(['/login']);
   }
@@ -95,11 +106,11 @@ export class AuthService {
       this.router.navigate(['/']);
       return of('err');
     }
-    const { id, username, email, tmdb_key} = this.jwtHelper.decodeToken(currentToken);
+    const { id, username, email, tmdb_key } = this.jwtHelper.decodeToken(currentToken);
     const user = { id, username, email, tmdb_key };
     return this.http.post<AuthDto>(`${this.authServerPath}/auth/refresh-token`, user)
       .pipe(
-        tap(({accessToken, role}: AuthDto) => {
+        tap(({ accessToken, role }: AuthDto) => {
           this.setUserValuebyToken({ accessToken, role });
         }))
   }
@@ -107,23 +118,25 @@ export class AuthService {
   upgradePermission(userRole: { role: UserRole }): Observable<AuthDto> {
     this.stopRefreshTokenTimer();
     return this.http.patch<AuthDto>(`${this.authServerPath}/auth/userupdate`, userRole)
-    .pipe(tap(({accessToken, role}: AuthDto) => {
-      this.setUserValuebyToken({ accessToken, role });
-      this.router.navigate(['/movies']);
-    }),
-    catchError((error) => {
-      return throwError('Something wrong during the upgrade!', error);
-    }))
+      .pipe(tap(({ accessToken, role }: AuthDto) => {
+        this.setUserValuebyToken({ accessToken, role });
+        this.router.navigate(['/movies']);
+      }),
+        catchError((error) => {
+          return throwError('Something wrong during the upgrade!', error);
+        }))
   }
 
   private setUserValuebyToken = ({ accessToken, role }: AuthDto) => {
-    console.log('JWT Access Token: ', accessToken); 
-
     localStorage.setItem('access_token', accessToken);
-    const { id, username, email, exp } = this.jwtHelper.decodeToken(accessToken);
-    const user = { id, username, email, role, jwtToken: accessToken };
+    const { id, username, email, tmdb_key, exp } = this.jwtHelper.decodeToken(accessToken);
+    this.movieservice.setMyApiKey = tmdb_key;
+    const user = { id, username, email, tmdb_key, role, jwtToken: accessToken };
+    console.log("user info now after login in: "+JSON.stringify(user));
     this.userSubject$.next(user);
+    this.startRefreshTokenTimer(exp);
   }
+
 
   private startRefreshTokenTimer(exp: string) {
     const expires = new Date(+exp * 1000);

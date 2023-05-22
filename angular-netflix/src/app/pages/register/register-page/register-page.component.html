@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="register-container">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form">
         <!-- Step 1 -->
         <div *ngIf="step === 1">
             <h2>STEP 1 OF 3</h2>
@@ -14,7 +14,7 @@
             <h2>STEP 2 OF 3</h2>
             <p>Create a password to start your membership</p>
             <p>Just a few more steps and you're done! We hate paperwork, too.</p>
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            <!-- <form [formGroup]="form" novalidate> -->
                 <div class="form-group">
                     <input type="email" placeholder="Email" class="info" formControlName="email">
                     <div class="check_email_ok" *ngIf="!email?.errors?.['emailExists'] && !isLoading"></div>
@@ -32,13 +32,13 @@
                         <p *ngIf="!password?.valid">Your password must contain between 4 and 60 characters.</p>
                     </div>
                 </div>
-                <button [disabled]="!form.valid" type="submit">Next</button>
-            </form>
+                <button (click)="nextStep()">Next</button>
+            <!-- </form> -->
         </div>
 
 
         <!-- Step 3 -->
-        <div *ngIf="step === 3">
+        <!-- <div *ngIf="step === 3">
             <h2>STEP 3 OF 3</h2>
             <p>Choose your plan.</p>
             <ul>
@@ -47,7 +47,29 @@
                 <li>Check mark three: Unlimited viewing on all your devices.</li>
             </ul>
             <button (click)="nextStep()">Next</button>
+        </div> -->
+
+
+        <!-- Step 3 -->
+        <div *ngIf="step === 3">
+            <p>STEP 3 OF 3</p>
+            <h1>Create a Username and Add your Tmdb Api_Key</h1>
+            <p>Just a few more steps and you're done!</p>
+            <p>We hate paperwork, too.</p>
+            <!-- <form [formGroup]="form" novalidate> -->
+                <input type="string" placeholder="Add a username" formControlName="username">
+                <div *ngIf="!username?.valid && (username?.dirty || username?.touched)">
+                    <p>Username is required!</p>
+                </div>
+                <input type="string" placeholder="Add a Tmdb Api_Key" formControlName="tmdb_key">
+                <div *ngIf="!tmdb_key?.valid && (tmdb_key?.dirty || tmdb_key?.touched)">
+                    <p *ngIf="tmdb_key?.errors?.['required']">Tmdb Api_Key is required!</p>
+                    <p *ngIf="tmdb_key?.errors?.['minLength']">Tmdb Api_Key is not valid!</p>
+                </div>
+                <button (click)="nextStep()">Next</button>
+            <!-- </form> -->
         </div>
+
 
         <!-- Step 4 -->
         <div *ngIf="step === 4">
@@ -61,11 +83,17 @@
             <div class="row first-row">
                 <p></p>
                 <div class="content-container">
-                    <div class="first-column box" (click)="selectPlan('USER')"><p>Basic with ads</p></div>
-                    <div class="second-column box" (click)="selectPlan('SUPERUSER')"><p>Standard</p></div>
-                    <div class="third-column box" (click)="selectPlan('ADMIN')"><p>Premium</p></div>
+                    <div class="first-column box" (click)="selectPlan('USER')">
+                        <p>Basic with ads</p>
+                    </div>
+                    <div class="second-column box" (click)="selectPlan('SUPERUSER')">
+                        <p>Standard</p>
+                    </div>
+                    <div class="third-column box" (click)="selectPlan('ADMIN')">
+                        <p>Premium</p>
+                    </div>
                 </div>
-    
+
             </div>
             <div class="row">
                 <p class="left">Monthly price</p>
@@ -107,7 +135,7 @@
                     <p class="third-column" [ngClass]="{ red: selecedColumn === 'ADMIN' }">YES</p>
                 </div>
             </div>
-            <button (click)="handleNavigate()">Submit</button>        
+            <button (click)="handleNavigate()">Submit</button>
         </div>
     </form>
 </div>

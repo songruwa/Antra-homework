@@ -14,9 +14,16 @@ import { of } from 'rxjs';
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.css']
 })
+
 export class RegisterPageComponent implements OnInit {
   step: number = 1;
-  form!: FormGroup;
+  form: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    username: ['', [Validators.required, Validators.minLength(4)]],
+    tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
+  });
+
   isLoading = false;
   selecedColumn: 'USER' | 'SUPERUSER' | 'ADMIN' = 'ADMIN';
 
@@ -24,14 +31,12 @@ export class RegisterPageComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient, private readonly authservice: AuthService,private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const email = params['email'];
-      console.log("passed parameter'email': " + email);
-      this.form = this.fb.group({
-        email: [email, [Validators.required, Validators.email], [this.emailExists.bind(this)]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
-      });
-    });
+      // this.form = this.fb.group({
+      //   email: ['', [Validators.required, Validators.email]],
+      //   password: ['', [Validators.required, Validators.minLength(8)]],
+      //   username: ['', [Validators.required, Validators.minLength(4)]],
+      //   tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
+      // });
   }
   
 
@@ -41,6 +46,14 @@ export class RegisterPageComponent implements OnInit {
 
   get password() {
     return this.form.get('password');
+  }
+
+  get username() {
+    return this.form.get('username');
+  }
+
+  get tmdb_key() {
+    return this.form.get('tmdb_key');
   }
 
   emailExists = (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -61,26 +74,61 @@ export class RegisterPageComponent implements OnInit {
   }
 
   nextStep(): void {
-    if (this.step === 1 || this.form.valid) {
+  
+    if (this.step < 4 || this.form.valid) {
       this.step++;
-    } else {
-      window.alert('Form not valid');
-    }
+      console.log(this.form.value);
+    } 
+    // else if (this.step === 4) {
+    //   console.log("About to call addUserInfo");
+    //   this.authservice.addUserInfo(this.form.value);
+    //   console.log(this.authservice.appUserRegister);
+    // }
   }
+  
 
-  onSubmit(): void {
-    if (this.form.valid) {
-      this.authservice.addUserInfo(this.form.value);
-      this.nextStep();
-    }
-  }
+// nextStep(): void {
+//   let stepValid = false;
+  
+//   if (this.step === 1) {
+//       stepValid = true;
+//   } else if (this.step === 2) {
+//       stepValid = (this.email?.valid || false) && (this.password?.valid || false);
+//   } else if (this.step === 3) {
+//       stepValid = (this.username?.valid || false) && (this.tmdb_key?.valid || false);
+//   }
+
+//   if (stepValid) {
+//       this.step++;
+//       console.log(this.form.value);
+//   } else {
+//       window.alert('Form not valid');
+//       console.log("Form doesn't work");
+//   }
+// }
+
+
+  // onSubmit(): void {
+  //   if (this.form.valid) {
+  //     this.authservice.addUserInfo(this.form.value);
+  //     console.log("when clicking the submit button, the form value is " + this.form.value);
+  //     this.nextStep();
+  //   }
+  // }
 
   selectPlan(user: 'USER' | 'SUPERUSER' | 'ADMIN') {
     this.selecedColumn = user;
+    console.log(this.selecedColumn);
   }
 
   handleNavigate() {
+
+    this.authservice.addUserInfo(this.form.value);
+    console.log(this.authservice.appUserRegister);
+
     const { jwtToken } = this.authservice.userValue;
+    console.log("userValue in authservice is : "+this.authservice.userValue);
+    console.log(jwtToken);
     if (jwtToken) {
       this.authservice.upgradePermission({role: UserRole[this.selecedColumn]}).subscribe()
     } else {
