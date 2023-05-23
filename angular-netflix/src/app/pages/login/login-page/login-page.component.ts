@@ -8,18 +8,16 @@ import { AuthService } from '../../../service/auth.service';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-  form!: FormGroup;
+  form: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+  });;
   loginMsg: string = '';
 
 
   constructor(private fb: FormBuilder, private readonly authService: AuthService) { }
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
+  ngOnInit(): void {}
 
   get email() {
     return this.form.get('email');
@@ -29,9 +27,13 @@ export class LoginPageComponent {
     return this.form.get('password');
   }
   onSubmit() {
-    this.authService.login({ email: this.email?.value, password: this.password?.value }).subscribe(() => {}, (error) => {
-      console.log(error);
-      this.loginMsg = 'Wrong email or password'
-    });
+    this.authService.login({ email: this.email?.value, password: this.password?.value })
+      .subscribe({
+        next: () => {},
+        error: (error) => {
+          console.log(error);
+          this.loginMsg = 'Wrong email or password'
+        }
+      });
   }
 }

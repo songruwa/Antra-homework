@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate {
     const user = this.authService.userValue;
     if (user && user.jwtToken) {
       // authorised so return true
+      console.log("AuthGuart received the user.jwtToken: "+user.jwtToken);
       return true;
     }
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -9,8 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { AuthService } from './service/auth.service';
 
-
+export function initializeApp(authService: AuthService) {
+  return (): Promise<any> => { 
+    return authService.loadUser();
+  }
+}
 
 @NgModule({
   declarations: [
@@ -26,7 +31,15 @@ import { SharedModule } from './shared/shared.module';
     CoreModule.forRoot(),
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    { 
+      provide: APP_INITIALIZER, 
+      useFactory: initializeApp, 
+      deps: [AuthService], 
+      multi: true 
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

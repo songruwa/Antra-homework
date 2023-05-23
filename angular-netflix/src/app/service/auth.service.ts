@@ -36,6 +36,21 @@ export class AuthService {
     private movieservice: MovieService,
     @Inject(AuthServer) private readonly authServerPath: string) { }
 
+  // https://huantao.medium.com/how-to-use-app-initializer-be5d2f801f93
+  loadUser(): Promise<any> {
+    return new Promise(resolve => {
+      const accessToken = localStorage.getItem('access_token');
+      if (accessToken) {
+        const { id, username, email, tmdb_key, exp, role } = this.jwtHelper.decodeToken(accessToken);
+        this.movieservice.setMyApiKey = tmdb_key;
+        const user = { id, username, email, tmdb_key, role, jwtToken: accessToken };
+        this.userSubject$.next(user);
+        this.startRefreshTokenTimer(exp);
+      }
+      resolve(true);
+    });
+  }
+
   addUserInfo(userInfo: UserInfo) {
     console.log("before updating: ", this.appUserRegister);
     this.appUserRegister = {
@@ -52,7 +67,7 @@ export class AuthService {
       ...userRole,
     };
 
-    console.log("appUserRegister is : "+JSON.stringify(this.appUserRegister));
+    console.log("appUserRegister is : " + JSON.stringify(this.appUserRegister));
     const { username, password, email, role, tmdb_key } = this.appUserRegister;
 
     if (!username || !password || !email || !role || !tmdb_key)
@@ -132,7 +147,7 @@ export class AuthService {
     const { id, username, email, tmdb_key, exp } = this.jwtHelper.decodeToken(accessToken);
     this.movieservice.setMyApiKey = tmdb_key;
     const user = { id, username, email, tmdb_key, role, jwtToken: accessToken };
-    console.log("user info now after login in: "+JSON.stringify(user));
+    console.log("user info now after login in: " + JSON.stringify(user));
     this.userSubject$.next(user);
     this.startRefreshTokenTimer(exp);
   }
