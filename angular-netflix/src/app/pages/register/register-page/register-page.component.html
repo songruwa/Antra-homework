@@ -66,12 +66,12 @@
                     <p *ngIf="tmdb_key?.errors?.['required']">Tmdb Api_Key is required!</p>
                     <p *ngIf="tmdb_key?.errors?.['minLength']">Tmdb Api_Key is not valid!</p>
                 </div>
-                <button (click)="nextStep()">Next</button>
+                <button (click)="onSubmit()">Next</button>
             <!-- </form> -->
         </div>
 
 
-        <!-- Step 4 -->
+        <!-- Step 4
         <div *ngIf="step === 4">
             <h2>STEP 3 OF 3</h2>
             <p>Choose the plan that’s right for you</p>
@@ -136,6 +136,6 @@
                 </div>
             </div>
             <button (click)="handleNavigate()">Submit</button>
-        </div>
+        </div> -->
     </form>
 </div>

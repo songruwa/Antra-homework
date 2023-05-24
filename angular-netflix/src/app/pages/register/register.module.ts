@@ -10,11 +10,13 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { CoreModule } from '../../core/core.module';
 import { AuthService } from '../../service/auth.service';
+import { RegisterPlanComponent } from './register-plan/register-plan.component';
 
 
 @NgModule({
   declarations: [
-    RegisterPageComponent
+    RegisterPageComponent,
+    RegisterPlanComponent
   ],
   imports: [
     CommonModule,

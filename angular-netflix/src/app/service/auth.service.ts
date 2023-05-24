@@ -138,8 +138,9 @@ export class AuthService {
         this.router.navigate(['/movies']);
       }),
         catchError((error) => {
-          return throwError('Something wrong during the upgrade!', error);
-        }))
+          return throwError(() => new Error('Something wrong during the upgrade!'));
+        })
+      )
   }
 
   private setUserValuebyToken = ({ accessToken, role }: AuthDto) => {

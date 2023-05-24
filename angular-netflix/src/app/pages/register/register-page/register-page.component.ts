@@ -75,16 +75,24 @@ export class RegisterPageComponent implements OnInit {
 
   nextStep(): void {
   
-    if (this.step < 4 || this.form.valid) {
+    if (this.step < 3 || this.form.valid) {
       this.step++;
+      console.log("Current step is "+ this.step);
       console.log(this.form.value);
     } 
+  }
+
+    onSubmit(): void {
+      this.authservice.addUserInfo(this.form.value);
+      console.log("register-page.component; appUserRegister: "+JSON.stringify(this.authservice.appUserRegister));
+      this.router.navigate(['/register/plan']);
+    }
+
     // else if (this.step === 4) {
     //   console.log("About to call addUserInfo");
     //   this.authservice.addUserInfo(this.form.value);
     //   console.log(this.authservice.appUserRegister);
     // }
-  }
   
 
 // nextStep(): void {
@@ -116,36 +124,38 @@ export class RegisterPageComponent implements OnInit {
   //   }
   // }
 
-  selectPlan(user: 'USER' | 'SUPERUSER' | 'ADMIN') {
-    this.selecedColumn = user;
-    console.log(this.selecedColumn);
-  }
+  // selectPlan(user: 'USER' | 'SUPERUSER' | 'ADMIN') {
+  //   this.selecedColumn = user;
+  //   console.log(this.selecedColumn);
+  // }
 
-  handleNavigate() {
+  // handleNavigate() {
 
-    this.authservice.addUserInfo(this.form.value);
-    console.log(this.authservice.appUserRegister);
+  //   this.authservice.addUserInfo(this.form.value);
+  //   console.log(this.authservice.appUserRegister);
 
-    const { jwtToken } = this.authservice.userValue;
-    console.log("userValue in authservice is : "+this.authservice.userValue);
-    console.log(jwtToken);
-    if (jwtToken) {
-      this.authservice.upgradePermission({role: UserRole[this.selecedColumn]}).subscribe()
-    } else {
-      this.authservice.signup({ role: UserRole[this.selecedColumn] })
-        .pipe(
-          tap(() => {
-            console.log('Signup successful');
-            window.alert('Your registration succeed');
-            this.router.navigate(['/']); // navigate to home page
-          }),
-          catchError(error => {
-            console.log('Signup failed', error);
-            window.alert('Your registration failed');
-            return of(error);
-          })
-        )
-        .subscribe();
-    }
-  }
+  //   const { jwtToken } = this.authservice.userValue;
+  //   console.log("userValue in authservice is : "+ JSON.stringify(this.authservice.userValue));
+  //   console.log(jwtToken);
+  //   if (jwtToken) {
+  //     console.log("jwtToken exists, and it's: "+jwtToken);
+  //     this.authservice.upgradePermission({role: UserRole[this.selecedColumn]}).subscribe()
+  //   } else {
+  //     console.log("jwtToken doesn't exist")
+  //     this.authservice.signup({ role: UserRole[this.selecedColumn] })
+  //       .pipe(
+  //         tap(() => {
+  //           console.log('Signup successful');
+  //           window.alert('Your registration succeed');
+  //           this.router.navigate(['/']); // navigate to home page
+  //         }),
+  //         catchError(error => {
+  //           console.log('Signup failed', error);
+  //           window.alert('Your registration failed');
+  //           return of(error);
+  //         })
+  //       )
+  //       .subscribe();
+  //   }
+  // }
 }
