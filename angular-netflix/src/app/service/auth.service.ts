@@ -23,6 +23,12 @@ export class AuthService {
   user$: Observable<AppUserAuth> = this.userSubject$.asObservable();
   private refreshTokenTimeout!: ReturnType<typeof setTimeout>;
 
+  private roleMap = {
+    'ADMIN': UserRole.ADMIN,
+    'SUPERUSER': UserRole.SUPERUSER,
+    'USER': UserRole.USER
+  };
+
 
   get userValue(): AppUserAuth {
     return this.userSubject$.value;
@@ -40,6 +46,8 @@ export class AuthService {
   loadUser(): Promise<any> {
     return new Promise(resolve => {
       const accessToken = localStorage.getItem('access_token');
+      const role = localStorage.getItem('role');
+
       if (accessToken) {
         const { id, username, email, tmdb_key, exp, role } = this.jwtHelper.decodeToken(accessToken);
         this.movieservice.setMyApiKey = tmdb_key;
@@ -109,6 +117,8 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('role');
+
     this.movieservice.setMyApiKey = '';
     this.stopRefreshTokenTimer();
     this.userSubject$.next({});
@@ -132,9 +142,12 @@ export class AuthService {
 
   upgradePermission(userRole: { role: UserRole }): Observable<AuthDto> {
     this.stopRefreshTokenTimer();
+    console.log(userRole);
+    console.log("the userupate api url: " + `${this.authServerPath}/auth/userupdate`)
     return this.http.patch<AuthDto>(`${this.authServerPath}/auth/userupdate`, userRole)
       .pipe(tap(({ accessToken, role }: AuthDto) => {
         this.setUserValuebyToken({ accessToken, role });
+        this.updateUserValue();
         this.router.navigate(['/movies']);
       }),
         catchError((error) => {
@@ -145,6 +158,8 @@ export class AuthService {
 
   private setUserValuebyToken = ({ accessToken, role }: AuthDto) => {
     localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('role', role);
+
     const { id, username, email, tmdb_key, exp } = this.jwtHelper.decodeToken(accessToken);
     this.movieservice.setMyApiKey = tmdb_key;
     const user = { id, username, email, tmdb_key, role, jwtToken: accessToken };
@@ -167,4 +182,19 @@ export class AuthService {
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
+
+  updateUserValue() {
+    const accessToken = localStorage.getItem('access_token');
+    const role = localStorage.getItem('role');
+
+    if (accessToken && role) {
+      const { id, username, email, tmdb_key, exp } = this.jwtHelper.decodeToken(accessToken);
+      const roleMap = this.roleMap;
+      const userRole: UserRole = roleMap[role as keyof typeof roleMap]; // Add the type assertion here
+      const user = { id, username, email, tmdb_key, role: userRole, jwtToken: accessToken };
+      this.userSubject$.next(user);
+      this.startRefreshTokenTimer(exp);
+    }
+  }
+
 }

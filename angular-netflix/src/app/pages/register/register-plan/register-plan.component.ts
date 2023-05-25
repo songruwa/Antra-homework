@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserRole } from 'src/app/service/interface/user-auth.interface';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, debounceTime, map, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router'; 
@@ -25,12 +24,15 @@ export class RegisterPlanComponent {
 
   handleNavigate() {
 
-    console.log("In register-plan.component, the userValue is "+this.authservice.userValue);
-    const { jwtToken } = this.authservice.userValue;
-    console.log("userValue in authservice is : "+ JSON.stringify(this.authservice.userValue));
-    console.log(jwtToken);
-    if (jwtToken) {
-      console.log("jwtToken exists, and it's: "+jwtToken);
+    const jwtToken = this.authservice.userValue.jwtToken;
+    const localStorage_jwtToken = localStorage.getItem('access_token');
+
+
+    console.log("jwtToken in authservice is : "+ jwtToken);
+    console.log("jwtToken in localStorage is: " + localStorage_jwtToken);
+
+    if (localStorage_jwtToken) {
+      console.log("jwtToken exists, and it's: "+localStorage_jwtToken);
       this.authservice.upgradePermission({role: UserRole[this.selecedColumn]}).subscribe()
     } else {
       console.log("jwtToken doesn't exist")
