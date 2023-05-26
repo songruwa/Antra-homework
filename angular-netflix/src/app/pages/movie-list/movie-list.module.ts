@@ -9,9 +9,6 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-
-
-
 @NgModule({
   declarations: [
     MovieListComponent,

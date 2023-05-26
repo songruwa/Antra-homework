@@ -25,52 +25,29 @@ export class MovieGuard implements CanActivate {
   ){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-
-
-
-    const {jwtToken, role} = this.authService.userValue;
-    // const jwtToken = localStorage.getItem('access_token');
-    // const role = localStorage.getItem("")
-
-    // Check weather the route can be activated;
+    // const {jwtToken, role} = this.authService.userValue;
+    const jwtToken = localStorage.getItem("access_token");
+    const role = localStorage.getItem("role");
+  
+    // Logging user token and role information
+    console.log("JWT Token: ", jwtToken);
+    console.log("User role: ", role);
+  
+    // Check whether the route can be activated
     if (
       jwtToken &&
       role &&
       (role === UserRole.ADMIN || role === UserRole.SUPERUSER)
     ) {
+      console.log('Access granted. Role is either ADMIN or SUPERUSER.');
       return true;
-    } 
-    // else if (!jwtToken) {
-    //   this.router.navigate(['/register/plan'], {
-    //     queryParams: { returnUrl: state.url },
-    //   });
-    // } 
-    else {
+    } else {
+      console.log('Access denied. Redirecting to register/plan.');
       this.router.navigate(['/register/plan'], {
         queryParams: { returnUrl: state.url },
       });
     }
     return false;     
-    // or false if you want to cancel the navigation  
   }
-
-  // canLoad(route: Route, segments: UrlSegment[]): boolean {
-  //   const { jwtToken, role } = this.authService.userValue;
-  //   if (
-  //     jwtToken &&
-  //     role &&
-  //     (role === UserRole.ADMIN || role === UserRole.SUPERUSER)
-  //   ) {
-  //     return true;
-  //   } 
-  //   // else if (!jwtToken){
-  //   //   this.router.navigate(['/register/plan']);
-
-  //   // } 
-  //   else {
-  //     this.router.navigate(['/register/plan']);
-  //   }
-  //   return false;
-  // }
   
 }

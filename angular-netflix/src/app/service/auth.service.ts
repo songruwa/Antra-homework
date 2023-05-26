@@ -151,7 +151,7 @@ export class AuthService {
         this.router.navigate(['/movies']);
       }),
         catchError((error) => {
-          return throwError(() => new Error('Something wrong during the upgrade!'));
+          return throwError(() => new Error('Something wrong deuring the upgrade!'));
         })
       )
   }
@@ -194,6 +194,9 @@ export class AuthService {
       const user = { id, username, email, tmdb_key, role: userRole, jwtToken: accessToken };
       this.userSubject$.next(user);
       this.startRefreshTokenTimer(exp);
+
+      console.log('Update User Value: ', this.userSubject$.value);
+
     }
   }
 
