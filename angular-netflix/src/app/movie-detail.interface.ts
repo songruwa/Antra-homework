@@ -33,3 +33,40 @@ export interface MovieDetail {
     imdb_id?: string | null;
     homepage?: string | null;
 }
+
+
+export interface Actor {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+export interface ActorsResponse {
+  id: number;
+  cast: Actor[];
+  crew: any[];
+}
+
+export interface MoviePoster {
+  aspect_ratio: number;
+  file_path: string;
+  height: number;
+  iso_639_1: string | null;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface MoviePostersResponse {
+  id: number;
+  backdrops: MoviePoster[];
+  posters: MoviePoster[];
+}

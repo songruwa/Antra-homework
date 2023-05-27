@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Movie } from '../../../movie.interface';
+import { Movie } from 'src/app/service/interface/movie.interface';
 import { MovieService } from '../../../service/movie.service';
 
 @Component({

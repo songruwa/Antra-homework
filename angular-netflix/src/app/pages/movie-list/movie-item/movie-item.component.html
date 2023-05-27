@@ -1,6 +1,18 @@
-<div class="movie-item movie_item" (click)="onClick()">
-  <mat-spinner *ngIf="loading$ | async"></mat-spinner>
-  <img [src]="movie.image" alt="{{ movie.title }}" />
-  <h3>{{ movie.title }}</h3>
-  <p>{{ movie.overview | slice: 0:100 }}...</p>
+<div class="movie-item movie_item">
+  <div class="spinner_container" *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="img-container">
+    <img [src]="movie.poster_path" alt="{{ movie.title }}" />
+  </div>
+  <div class="info-container">
+    <h4>{{ movie.title }}</h4>
+    <div class="year-language-score-container">
+      <p>{{ movie.release_date | slice: 0:4 }}</p>
+      <p>{{ movie.original_language | uppercase }}</p>
+      <p>{{ movie.vote_average | number: '1.1-1' }}</p>
+    </div>
+    <h5>{{ movie.overview | slice: 0:95 }}...</h5>
+    <button (click)="onClick()">More Details</button>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-.card {
+/* .card {
     position: relative;
     height: 100vh;
     width: 100vw;
@@ -69,4 +69,92 @@ mat-icon {
 
 mat-icon:hover {
     background-color: #808080;
+}
+
+.actor-image {
+    width: 100px;
+    height: 150px; 
+    object-fit: cover; 
+}
+
+.poster-image {
+    width: 200px;
+    height: 300px;  
+    object-fit: cover; 
+} */
+
+.card {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background-size: auto;
+    display: flex;
+    align-items: flex-end; 
+    justify-content: flex-start; 
+    color: #ffffff; 
+}
+
+.card-content {
+    position: relative;
+    height: 50%;
+    width: 50%;
+    margin: 3% 0 3% 3%;
+    padding: 3% 0 3% 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start; 
+    color: #ffffff; 
+}
+
+.descriptions, .movie-info, .btn-detail, .rating, .posters h2, .actors h2 {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.posters .list, .actors .list {
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start; 
+}
+
+.poster-image {
+    height: 10rem;
+    width: 15rem;
+    padding: 0.5rem;
+    object-fit: cover; 
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+
+.actor-image {
+    height: 9.5rem;
+    width: 5rem;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    object-fit: cover; 
+    flex-shrink: 0;
+    border-radius: 10%;
+}
+
+.btn-detail {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start; 
+}
+
+.btn {
+    background-color: rgb(31, 88, 255);
+    border: none;
+    height: 4rem;
+    width: 10rem;
+    border-radius: 10px;
+    margin-right: 2.5rem;
+    padding-top: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    color: #ffffff; 
 }

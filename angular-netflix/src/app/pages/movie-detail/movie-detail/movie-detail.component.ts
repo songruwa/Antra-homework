@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../../service/movie.service';
-import { MovieDetail } from '../../../movie-detail.interface';
-import { MatDialog } from '@angular/material/dialog'; 
+import { MovieDetail, Actor, ActorsResponse, MoviePoster, MoviePostersResponse } from '../../../movie-detail.interface';
+import { MatDialog } from '@angular/material/dialog';
 import { Video } from '../video.interface';
-import { Movie } from 'src/app/movie.interface';
+import { Movie } from 'src/app/service/interface/movie.interface';
 import { YoutubeComponent } from '../youtube/youtube.component';
 
 
@@ -13,7 +13,7 @@ import { YoutubeComponent } from '../youtube/youtube.component';
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css']
 })
-export class MovieDetailComponent implements OnInit{
+export class MovieDetailComponent implements OnInit {
   moviedetail!: MovieDetail;
   movie!: Movie;
   movieId!: number;
@@ -23,18 +23,45 @@ export class MovieDetailComponent implements OnInit{
   poster_img_high = '';
   backdrop_img_high = '';
 
+  actors!: Actor[];
+  posters!: MoviePoster[];
+
   loading$ = this.movieService.loading$;
 
 
   constructor(private route: ActivatedRoute, private movieService: MovieService, private dialog: MatDialog) { }
 
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.movieId = +params['id'];
+
       this.movieService.getMovieDetail(this.movieId).subscribe(movie => {
         this.moviedetail = movie;
         this.movie = movie;
+        console.log("Movie detail:"+JSON.stringify(this.movie));
+        console.log(this.movie.image);
       });
+
+      this.movieService.getMovieActors(this.movieId).subscribe({
+        next: (actorResponse: Actor[]) => {
+          this.actors = actorResponse;
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+      
+
+      this.movieService.getMoviePosters(this.movieId).subscribe({
+        next: (posterResponse: MoviePoster[]) => {
+          this.posters = posterResponse;
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+      
     });
   }
 
@@ -43,10 +70,10 @@ export class MovieDetailComponent implements OnInit{
     const dialogRef = this.dialog.open(YoutubeComponent, {
       data: {
         movieId: this.movieId,
-        movieVideos: this.movieVideos, 
-        hasposter_img: this.hasPoster_img, 
+        movieVideos: this.movieVideos,
+        hasposter_img: this.hasPoster_img,
         hasbackdrop_img: this.hasBackdrop_img,
-        poster_img_high: this.poster_img_high, 
+        poster_img_high: this.poster_img_high,
         backdrop_img_high: this.backdrop_img_high,
       },
       backdropClass: 'backdropBackground',

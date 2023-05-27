@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Movie, MoiveDetail } from '../movie.interface';
+import { Movie } from './interface/movie.interface';
 import { DiscoverMovie } from '../service/interface/discover-movie.interface';
-import { SearchMovieReturn } from '../service/interface/search-movie-return.interface';
+// import { SearchMovieReturn } from '../service/interface/search-movie-return.interface';
 import { SearchMovieDto } from './interface/search-movie-dto.interface';
 
 
@@ -14,7 +14,6 @@ import { SearchMovieDto } from './interface/search-movie-dto.interface';
 export class MovieService {
   private apiKey: string = '7234c6e70cb884a32961ffb587f82eae';
   moviesChanged = new Subject<Movie[]>();
-  movieDetailChanged = new Subject<MoiveDetail>();
   // https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events
   loading$ = new BehaviorSubject(false);
 
@@ -39,7 +38,7 @@ export class MovieService {
     this.baseSearchMovie.api_key = api_key;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getMovies() {
     return this.http
@@ -57,7 +56,18 @@ export class MovieService {
               id: info.id,
               title: info.title,
               overview: info.overview,
-              image: 'https://image.tmdb.org/t/p/w780' + info.poster_path,
+              poster_path: 'https://image.tmdb.org/t/p/w780' + info.poster_path,
+              release_date: info.release_date,
+              original_language: info.original_language,
+              vote_average: info.vote_average,
+              adult: info.adult,
+              first_air_date: info.first_air_date,
+              genre_ids: info.genre_ids,
+              original_title: info.original_title,
+              backdrop_path: info.backdrop_path,
+              popularity: info.popularity,
+              vote_count: info.vote_count,
+              video: info.video,
             });
           });
           return movieData;
@@ -94,7 +104,7 @@ export class MovieService {
         })
       );
   }
-  
+
 
   getMovieVideo(id: number) {
     return this.http
@@ -111,6 +121,40 @@ export class MovieService {
         })
       );
   }
-
+  getMovieActors(movieId: number) {
+    const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?`;
+    console.log('The URL is:', url);
+  
+    return this.http
+      .get<{ cast: any[] }>(url, {
+        params: new HttpParams().set('api_key', this.apiKey),
+      })
+      .pipe(
+        map((response: any) => {
+          console.log(response); 
+          return response.cast;
+        }),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+  
+  getMoviePosters(movieId: number) {
+    console.log(movieId);
+    return this.http
+      .get<{ posters: any[] }>(`https://api.themoviedb.org/3/movie/${movieId}/images?`, {
+        params: new HttpParams().set('api_key', this.apiKey),
+      })
+      .pipe(
+        map((response: any) => {
+          console.log(response); 
+          return response.posters;
+        }),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
 
 }
