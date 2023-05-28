@@ -38,15 +38,19 @@ export class MovieService {
     this.baseSearchMovie.api_key = api_key;
   }
 
+  private currentPage = 1;
+
+  movies: Movie[] = [];
+
   constructor(private http: HttpClient) { }
 
-  getMovies() {
+  getMovies(page: number = 1) {
     return this.http
       .get<{ [key: string]: Movie }>(
-        'https://api.themoviedb.org/3/movie/popular?',
-        {
-          params: new HttpParams().set('api_key', this.apiKey),
-        }
+        `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&page=${page}`,
+        // {
+        //   params: new HttpParams().set('api_key', this.apiKey),
+        // }
       )
       .pipe(
         map((response: any) => {
@@ -74,9 +78,18 @@ export class MovieService {
         })
       )
       .subscribe((data) => {
-        this.moviesChanged.next(data);
+        this.movies = [...this.movies, ...data];
+        console.log(this.movies);
+        this.moviesChanged.next(this.movies); 
       });
   }
+
+  loadMoreMovies() {
+    this.currentPage++;
+    this.getMovies(this.currentPage);
+    console.log(this.currentPage);
+  }
+  
 
   getMovieDetail(id: number) {
     this.loading$.next(true);

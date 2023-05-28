@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Movie } from 'src/app/service/interface/movie.interface';
 import { MovieService } from '../../../service/movie.service';
@@ -21,6 +21,16 @@ export class MovieListComponent implements OnInit, OnDestroy {
       }
     );
     this.movieService.getMovies();
+  }
+
+  @HostListener("window:scroll", ["$event"])
+  onWindowScroll() {
+    // If we're near the bottom of the page, load more movies
+    let position = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
+    let max = document.documentElement.scrollHeight;
+    if(position === max ) {
+      this.movieService.loadMoreMovies();
+    }
   }
 
   ngOnDestroy(): void {
