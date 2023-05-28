@@ -13,20 +13,25 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class RegisterPageComponent implements OnInit {
   step: number = 1;
-  form: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-    username: ['', [Validators.required, Validators.minLength(4)]],
-    tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
-  });
+  form!: FormGroup;
+
+  public emailAlreadyExist = false;
 
   isLoading = false;
   selecedColumn: 'USER' | 'SUPERUSER' | 'ADMIN' = 'ADMIN';
 
-
   constructor(private fb: FormBuilder, private http: HttpClient, private readonly authservice: AuthService,private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email], [this._emailExists.bind(this)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      username: ['', [Validators.required, Validators.minLength(4)]],
+      tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
+    });
+    // this.form.controls['email'].setValidators([Validators.required, Validators.email, this._emailExists.bind(this)]);
+    // this.form.controls['email'].updateValueAndValidity();
+  }
 
   get email() {
     return this.form.get('email');
@@ -44,9 +49,11 @@ export class RegisterPageComponent implements OnInit {
     return this.form.get('tmdb_key');
   }
 
-  emailExists = (control: AbstractControl): Observable<ValidationErrors | null> => {
+  _emailExists = (control: AbstractControl): Observable<ValidationErrors | null> => {
     const val = control.value;
     const url = "http://localhost:4231/auth/check-email";
+    this.emailAlreadyExist = false;
+
     return this.http.post(url, { email: val }).pipe(
       tap((_) => { this.isLoading = true }),
       debounceTime(500),
@@ -54,8 +61,12 @@ export class RegisterPageComponent implements OnInit {
         console.log(data)
         this.isLoading = false;
         if (data) {
-          return { hasEmail: true };
+          console.log("This email has already been registerd");
+          this.emailAlreadyExist = true;
+          // this.step = 3;
+          return { emailExists: true };
         }
+        console.log("This email hasn't been registerd");
         return null;
       })
     )
@@ -70,10 +81,9 @@ export class RegisterPageComponent implements OnInit {
     } 
   }
 
-    onSubmit(): void {
-      this.authservice.addUserInfo(this.form.value);
-      console.log("register-page.component; appUserRegister: "+JSON.stringify(this.authservice.appUserRegister));
-      this.router.navigate(['/register/plan']);
-    }
-
+  onSubmit(): void {
+    this.authservice.addUserInfo(this.form.value);
+    console.log("register-page.component; appUserRegister: "+JSON.stringify(this.authservice.appUserRegister));
+    this.router.navigate(['/register/plan']);
+  }
 }

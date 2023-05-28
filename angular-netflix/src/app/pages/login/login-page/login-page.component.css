@@ -1,62 +1,77 @@
-.login-container {
+main {
   position: relative;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  border-radius: 4px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-  background: url('../../../../assets/home-bg.jpg') no-repeat center center fixed;
-  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
+.form-container {
+  width: 30%;
+  min-width: 250px;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.7) 10%,
+      rgba(0, 0, 0, 1) 100%
+    );
   padding: 20px;
+  border-radius: 10px;
+  color: rgb(175, 178, 188);
 }
 
-.header img {
-  height: 50px;
+.form-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: white;
 }
 
-h1 {
-  margin-bottom: 1rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.form-control {
+.form-container .info {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: none;
+  border: 1px solid rgb(175, 178, 188);
+  color: rgb(175, 178, 188);
+  border-radius: 5px;
 }
 
-.btn {
+.form-container button {
   width: 100%;
-  padding: 0.5rem;
-  background-color: #e50914;
-  color: #ffffff;
+  padding: 15px;
   border: none;
-  border-radius: 4px;
+  background-color: rgb(31, 88, 255);
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  margin-top: 20px;
   cursor: pointer;
-  margin-top: 1rem;
 }
 
-.signup-text {
-  margin-top: 1rem;
-  text-align: center;
+.form-container .remember-help-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: white;
 }
 
-.signup-text a {
-  color: #e50914;
+.form-container .remember-help-container span {
+  display: flex;
+  align-items: center;
+}
+
+.form-container .remember-help-container #help {
   text-decoration: none;
+  color: rgb(31, 88, 255);
+}
+
+.form-container .signup {
+  text-align: center;
+  margin-top: 20px;
+  color: white;
+}
+
+.form-container .signup a {
+  color: rgb(31, 88, 255);
 }
