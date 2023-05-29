@@ -6,6 +6,9 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background: url('../../../../assets/home-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
 .form-container {

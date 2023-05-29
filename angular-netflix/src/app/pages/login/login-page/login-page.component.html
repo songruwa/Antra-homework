@@ -12,7 +12,7 @@
                     <p>Email is required</p>
                 </div>
             </div>
-            <input placeholder="Password" class="info" formControlName="password">
+            <input placeholder="Password" class="info" formControlName="password" type="password">
             <div *ngIf="!password?.valid && (password?.dirty || password?.touched)">
                 <p>Your password must contain between 4 and 60 characters.</p>
             </div>

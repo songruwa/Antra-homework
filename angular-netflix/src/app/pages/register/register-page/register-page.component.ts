@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors }
 import { AuthService } from 'src/app/service/auth.service';
 import { Observable, debounceTime, map, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router'; 
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -20,17 +20,20 @@ export class RegisterPageComponent implements OnInit {
   isLoading = false;
   selecedColumn: 'USER' | 'SUPERUSER' | 'ADMIN' = 'ADMIN';
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private readonly authservice: AuthService,private router: Router, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private readonly authservice: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email], [this._emailExists.bind(this)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      username: ['', [Validators.required, Validators.minLength(4)]],
-      tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
-    });
-    // this.form.controls['email'].setValidators([Validators.required, Validators.email, this._emailExists.bind(this)]);
-    // this.form.controls['email'].updateValueAndValidity();
+    this.route.queryParams.subscribe(params => {
+
+      this.form = this.fb.group({
+        email: [params['email'] || ['', [Validators.required, Validators.email], [this._emailExists.bind(this)]]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        username: ['', [Validators.required, Validators.minLength(4)]],
+        tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
+      });
+      // this.form.controls['email'].setValidators([Validators.required, Validators.email, this._emailExists.bind(this)]);
+      // this.form.controls['email'].updateValueAndValidity();
+    })
   }
 
   get email() {
@@ -73,17 +76,17 @@ export class RegisterPageComponent implements OnInit {
   }
 
   nextStep(): void {
-  
+
     if (this.step < 3 || this.form.valid) {
       this.step++;
-      console.log("Current step is "+ this.step);
+      console.log("Current step is " + this.step);
       console.log(this.form.value);
-    } 
+    }
   }
 
   onSubmit(): void {
     this.authservice.addUserInfo(this.form.value);
-    console.log("register-page.component; appUserRegister: "+JSON.stringify(this.authservice.appUserRegister));
+    console.log("register-page.component; appUserRegister: " + JSON.stringify(this.authservice.appUserRegister));
     this.router.navigate(['/register/plan']);
   }
 }

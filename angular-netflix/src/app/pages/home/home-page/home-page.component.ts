@@ -16,6 +16,7 @@ export class HomePageComponent implements OnInit {
 
   signUp(): void {
     this.router.navigate(['/register'], { queryParams: { email: this.email } });
+    console.log("the email I wanna register is:" + this.email);
   }
   
 }
