@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { YouTubePlayerModule } from "@angular/youtube-player";
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 
 
 
@@ -24,6 +26,7 @@ import { YouTubePlayerModule } from "@angular/youtube-player";
     MatIconModule,
     MatDialogModule,
     YouTubePlayerModule,
+    MatButtonToggleModule
   ]
 })
 export class MovieDetailModule { }

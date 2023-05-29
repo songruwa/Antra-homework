@@ -39,8 +39,8 @@ export class MovieDetailComponent implements OnInit {
       this.movieService.getMovieDetail(this.movieId).subscribe(movie => {
         this.moviedetail = movie;
         this.movie = movie;
-        console.log("Movie detail:"+JSON.stringify(this.movie));
-        console.log(this.movie.image);
+
+        console.log("Movie Genre: " + this.moviedetail.genres);
       });
 
       this.movieService.getMovieActors(this.movieId).subscribe({

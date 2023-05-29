@@ -1,72 +1,50 @@
-<!-- <app-navbar></app-navbar>
-<mat-card class="card" [ngStyle]="{ 'background-image': 'url(' + movie.poster_path + ')' }" *ngIf="movie">
-    <mat-card-content class="card-content">
-        <h1>{{ moviedetail.title }}</h1>
-        <p class="descriptions">{{ moviedetail.overview }}</p>
-        <span>
-            {{ moviedetail.runtime }} mins · · {{ moviedetail.release_date | date: 'yyyy' }}
-        </span>
-        <h3>Released: {{ moviedetail.release_date | date:'fullDate' }}</h3>
-        <p>Home Page <a [href]="moviedetail.homepage" target="_blank">{{moviedetail.homepage}}</a></p>
-        <mat-card-actions>
-            <button mat-stroked-button color="" class="btn-detail">LIKE</button>
-            <button mat-stroked-button color="" class="btn-detail" (click)="openDialog()">TRAILER</button>
-        </mat-card-actions>
-        <h4 class="rating">RATING: {{ moviedetail.vote_average }}</h4>
-
-        <h2>Posters</h2>
-        <div *ngFor="let poster of (posters | slice: 0:10)">
-            <img class="poster-image" [src]="'https://image.tmdb.org/t/p/original' + poster.file_path"
-                alt="Poster Image" />
-        </div>
-
-
-        <h2>Actors</h2>
-        <div *ngFor="let actor of (actors | slice: 0:10)">
-            <img class="actor-image" [src]="'https://image.tmdb.org/t/p/original' + actor.profile_path"
-                alt="Actor Image" />
-            <p>{{ actor.name }}</p>
-        </div>
-
-    </mat-card-content>
-</mat-card> -->
-
 <app-navbar></app-navbar>
-<main class="card" [ngStyle]="{'background-image': ['url(', movie.image, ')'].join('')}">
+<main class="card" [ngStyle]="{'--bg-url': 'url(' + movie.image + ')'}">
     <div class="card-content">
-        <h1>{{ moviedetail.title }}</h1>
-        <p class="descriptions">{{ moviedetail.overview }}</p>
-        <p class="movie-info">
-            <span>
-                {{ moviedetail.runtime }} mins · · {{ moviedetail.release_date | date: 'yyyy' }}
-            </span>
-        <h3>Released: {{ moviedetail.release_date | date:'fullDate' }}</h3>
-        <p>Home Page <a [href]="moviedetail.homepage" target="_blank">{{moviedetail.homepage}}</a></p>
-        <div class="btn-detail">
-            <button class="btn">
-                <span>LIKE</span>
-            </button>
-            <button class="btn" (click)="openDialog()">
-                <span>TRAILER</span>
-            </button>
-        </div>
-        <p class="rating">RATING: {{ moviedetail.vote_average }}</p>
+        <div class="left-content">
+            <h1>{{ moviedetail.title }}</h1>
+ 
+            <p class="movie-info">
+                <span>
+                    {{ moviedetail.vote_average | number:'1.1-1' }} | {{moviedetail.runtime}} min | {{ moviedetail.genres }} | {{ moviedetail.release_date | date: 'yyyy' }}
+                </span>
+            </p>
+            <p class="descriptions">{{ moviedetail.overview }}</p>
 
-        <div class="posters">
-            <h2>Posters</h2>
-            <div class="list" *ngFor="let poster of (posters | slice: 0:10)">
-                <img class="poster-image" [src]="'https://image.tmdb.org/t/p/original' + poster.file_path"
-                    alt="Poster Image" />
+            <h3>Released: {{ moviedetail.release_date | date:'fullDate' }}</h3>
+            <p>Home Page <a [href]="moviedetail.homepage" target="_blank">{{moviedetail.homepage}}</a></p>
+            <div class="btn-detail">
+                <button class="btn">
+                    <span>LIKE</span>
+                </button>
+                <button class="btn" (click)="openDialog()">
+                    <span>TRAILER</span>
+                </button>
             </div>
         </div>
 
-        <div class="actors">
-            <h2>Actors</h2>
-            <div class="list" *ngFor="let actor of (actors | slice: 0:10)">
-                <img class="actor-image" [src]="'https://image.tmdb.org/t/p/original' + actor.profile_path"
-                    alt="Actor Image" />
-                <p>{{ actor.name }}</p>
+        <div class="right-content">
+            <div class="posters">
+                <h2>Posters</h2>
+                <div class="list">
+                    <div *ngFor="let poster of (posters | slice: 0:4)">
+                        <img class="poster-image" [src]="'https://image.tmdb.org/t/p/original' + poster.file_path"
+                            alt="Poster Image" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="actors">
+                <h2>Actors</h2>
+                <div class="list">
+                    <div *ngFor="let actor of (actors | slice: 0:10)">
+                        <img class="actor-image" [src]="'https://image.tmdb.org/t/p/original' + actor.profile_path"
+                            alt="Actor Image" />
+                        <p class="actorName">{{ actor.name }}</p>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 </main>

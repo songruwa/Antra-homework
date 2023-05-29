@@ -99,20 +99,21 @@ export class MovieService {
       })
       .pipe(
         map((response: any) => {
-          this.loading$.next(false); // Make sure to indicate loading has finished after processing the data
+          this.loading$.next(false);
           return {
             id: response.id,
             title: response.title,
             overview: response.overview,
-            rating: response.vote_average,
-            releaseDate: response.release_date,
+            vote_average: response.vote_average,
+            release_date: response.release_date,
             homepage: response.homepage,
             genres: response.genres.map((genre: any) => genre.name),
-            image: 'https://image.tmdb.org/t/p/w780' + response.poster_path,
+            runtime: response.runtime,
+            image: 'https://image.tmdb.org/t/p/original' + response.backdrop_path,
           };
         }),
         catchError(error => {
-          this.loading$.next(false); // Make sure to indicate loading has finished even if there's an error
+          this.loading$.next(false); 
           return throwError(error);
         })
       );
@@ -156,13 +157,13 @@ export class MovieService {
   getMoviePosters(movieId: number) {
     console.log(movieId);
     return this.http
-      .get<{ posters: any[] }>(`https://api.themoviedb.org/3/movie/${movieId}/images?`, {
+      .get<{ backdrops: any[] }>(`https://api.themoviedb.org/3/movie/${movieId}/images?`, {
         params: new HttpParams().set('api_key', this.apiKey),
       })
       .pipe(
         map((response: any) => {
           console.log(response); 
-          return response.posters;
+          return response.backdrops;
         }),
         catchError(error => {
           return throwError(error);
