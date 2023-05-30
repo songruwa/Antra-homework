@@ -26,13 +26,11 @@ export class RegisterPageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
 
       this.form = this.fb.group({
-        email: [params['email'] || ['', [Validators.required, Validators.email], [this._emailExists.bind(this)]]],
+        email: [params['email'], [Validators.required, Validators.email], [this._emailExists.bind(this)]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         username: ['', [Validators.required, Validators.minLength(4)]],
         tmdb_key: ['', [Validators.required, Validators.minLength(30)]]
       });
-      // this.form.controls['email'].setValidators([Validators.required, Validators.email, this._emailExists.bind(this)]);
-      // this.form.controls['email'].updateValueAndValidity();
     })
   }
 

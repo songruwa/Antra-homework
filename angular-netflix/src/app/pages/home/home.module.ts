@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomePageComponent } from './home-page/home-page.component'; 
 
 import {SharedModule} from '../../shared/shared.module'
-import {FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -19,6 +19,7 @@ import {FormsModule} from '@angular/forms';
     HomeRoutingModule,
     SharedModule,
     FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class HomeModule { }

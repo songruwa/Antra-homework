@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<!-- <app-navbar></app-navbar>
 <div class="home-content">
     <h1>Unlimited movies, TV shows, and more.</h1>
     <h2>Watch anywhere. Cancel anytime.</h2>
@@ -6,4 +6,23 @@
         <input type="email" placeholder="Email address" [(ngModel)]="email" name="email" />
         <button type="submit">Sign Up</button>
     </form>
+</div> -->
+
+
+<app-navbar></app-navbar>
+<div class="home-content">
+    <h1>Unlimited movies, TV shows, and more.</h1>
+    <h2>Watch anywhere. Cancel anytime.</h2>
+    <div class="form-group" [formGroup]="form">
+        <input type="email" placeholder="Email" class="info" formControlName="email">
+        <div class="check_email_ok" *ngIf="!form.get('email')?.errors?.['emailExists'] && !isLoading"></div>
+        <div class="check_email_not" *ngIf="form.get('email')?.errors?.['emailExists'] && !isLoading"></div>
+        <div *ngIf="!form.get('email')?.valid && (form.get('email')?.dirty || form.get('email')?.touched)">
+            <p *ngIf="form.get('email')?.errors?.['required']">Email is required!</p>
+            <p *ngIf="form.get('email')?.errors?.['emailExists']">This email already exists...</p>
+            <p *ngIf="form.get('email')?.errors?.['email']">Invalid email!</p>
+        </div>
+        <button type="button" (click)="signUp()" [disabled]="emailExist || form.get('email')?.invalid">Sign Up</button>
+    </div>
 </div>
+
