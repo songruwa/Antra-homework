@@ -3,12 +3,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 62px);
-    /* Subtract the navbar height */
-    background: url('../../../../assets/home-bg.jpg') no-repeat center center fixed;
+    height: 800px;  /* Set a fixed height */
+    background: url('../../../../assets/home-bg.jpg') no-repeat center center;
     background-size: cover;
     color: #ffffff;
     text-align: center;
+    overflow: auto; /* If content exceeds 800px height, allow scrolling */
 }
 
 h1 {
@@ -21,12 +21,15 @@ h2 {
     margin-bottom: 1rem;
 }
 
-form {
+.form-group {
     display: flex;
+    flex-direction: row; /* makes the form items line up in a row */
     align-items: center;
+    justify-content: center; /* centers the form items horizontally */
+    gap: 0.5rem; /* provides a little space between the form items */
 }
 
-input {
+input.info {
     padding: 0.5rem;
     border: 1px solid #ffffff;
     border-radius: 4px;
