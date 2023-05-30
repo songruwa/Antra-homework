@@ -3,12 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 800px;  /* Set a fixed height */
-    background: url('../../../../assets/home-bg.jpg') no-repeat center center;
+    height: 800px; 
+    background: url('https://assets.nflxext.com/ffe/siteui/vlv3/3d6cf7c4-ad17-457a-b6cf-ea952926ba74/1e8677dc-8384-41ce-8bf0-99284008466a/US-en-20230206-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center;
     background-size: cover;
     color: #ffffff;
     text-align: center;
-    overflow: auto; /* If content exceeds 800px height, allow scrolling */
+    overflow: auto; 
+    margin-bottom: 0%;
 }
 
 h1 {
@@ -46,3 +47,113 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.intro-content {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    color: white;
+    height: auto;
+    margin-top: 0;
+}
+
+.center {
+    width: 60%;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    min-width: 1000px;
+    background-color: black;
+}
+
+.text {
+    width: 45%;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+
+.pic {
+    width: 50%;
+    position: relative;
+}
+
+.pic > img {
+    width: 100%;
+}
+
+hr {
+    border: solid rgba(255, 255, 255, 0.1) 3px;
+}
+
+.gif {
+    position: absolute;
+    top: 21%;
+    left: 13%;
+    width: 70%;
+    z-index: -1000;
+}
+
+.mac-video {
+    position: absolute;
+    top: 12%;
+    left: 20%;
+    width: 60%;
+    z-index: -1000;
+}
+
+.offline1 {
+    background-color: black;
+    border: solid rgb(61, 59, 59) 2px;
+    position: absolute;
+    top:70%;
+    left:16%;
+    width:70%;
+    border-radius: 15px;
+    height: 100px;
+}
+
+.offline2{
+    margin: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+
+.offline3 {
+    height: 100%;
+}
+
+.movie{
+    display: inline-block;
+    height: 100%;
+}
+
+.text-offline {
+    display: inline-block;
+    text-align: left;
+    position: relative;
+    top: -25px;
+    left: 10px;
+}
+
+.Text1 {
+    margin: 0 0;
+    font-size: 100%;
+    font-weight: bold;
+}
+.Text2 {
+    margin: 0 0;
+    font-size: 70%;
+    color:rgb(42,111,220);
+}
+
+.Download {
+    width: 50px;
+    height: 50px;
+}
+
+
