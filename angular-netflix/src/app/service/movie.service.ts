@@ -39,18 +39,28 @@ export class MovieService {
   }
 
   private currentPage = 1;
+  private loadingMovies = false;
+
 
   movies: Movie[] = [];
 
   constructor(private http: HttpClient) { }
 
   getMovies(page: number = 1) {
+    console.log('Start loading movies, current page:', page);
+
+    // If there is a request ongoing, do not make a new one
+    if (this.loadingMovies) {
+      console.log('Loading movies in progress, aborting new request');
+      return;
+    }
+
+    console.log('Start a new request to load movies');
+    this.loadingMovies = true;
+
     return this.http
       .get<{ [key: string]: Movie }>(
         `https://api.themoviedb.org/3/discover/movie?api_key=${this.apiKey}&page=${page}`,
-        // {
-        //   params: new HttpParams().set('api_key', this.apiKey),
-        // }
       )
       .pipe(
         map((response: any) => {
@@ -79,17 +89,25 @@ export class MovieService {
       )
       .subscribe((data) => {
         this.movies = [...this.movies, ...data];
-        console.log(this.movies);
-        this.moviesChanged.next(this.movies); 
+        console.log('Finished loading movies, current movie count:', this.movies.length);
+        this.moviesChanged.next(this.movies);
+
+        // Request is complete, so set the state back to not loading
+        this.loadingMovies = false;
+        console.log('Reset loadingMovies state to:', this.loadingMovies);
       });
   }
 
   loadMoreMovies() {
+    if (this.loadingMovies) {
+      console.log('Loading movies in progress, cannot load more');
+      return;
+    }
     this.currentPage++;
+    console.log('Loading more movies, next page:', this.currentPage);
     this.getMovies(this.currentPage);
-    console.log(this.currentPage);
   }
-  
+
 
   getMovieDetail(id: number) {
     this.loading$.next(true);
@@ -113,7 +131,7 @@ export class MovieService {
           };
         }),
         catchError(error => {
-          this.loading$.next(false); 
+          this.loading$.next(false);
           return throwError(error);
         })
       );
@@ -138,14 +156,14 @@ export class MovieService {
   getMovieActors(movieId: number) {
     const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?`;
     console.log('The URL is:', url);
-  
+
     return this.http
       .get<{ cast: any[] }>(url, {
         params: new HttpParams().set('api_key', this.apiKey),
       })
       .pipe(
         map((response: any) => {
-          console.log(response); 
+          console.log(response);
           return response.cast;
         }),
         catchError(error => {
@@ -153,7 +171,7 @@ export class MovieService {
         })
       );
   }
-  
+
   getMoviePosters(movieId: number) {
     console.log(movieId);
     return this.http
@@ -162,7 +180,7 @@ export class MovieService {
       })
       .pipe(
         map((response: any) => {
-          console.log(response); 
+          console.log(response);
           return response.backdrops;
         }),
         catchError(error => {
