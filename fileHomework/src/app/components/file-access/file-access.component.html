@@ -1,0 +1,17 @@
+<input type="file" (change)="loadFile(inputbox)" #inputbox>
+<hr>
+<table>
+  <thead>
+    <tr class="tr">
+      <th *ngFor="let title of titles"> {{title}} </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of dataInTheCSV">
+      <td *ngFor="let item of data | keyvalue: removeOrder">
+        {{ item.value }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
